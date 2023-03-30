@@ -86,7 +86,19 @@ class player {
 
   }
 }
+/* Enemy Class */
 
+class Enemy {
+  constructor({ position, velocity }) {
+    this.position = position
+    this.velocity = velocity
+    this.width = 100
+    this.height = 100
+  }
+  draw() {
+    c.drawImage
+  }
+}
 /* Map */
 let map = [
   ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
@@ -238,8 +250,10 @@ function animate() {
       playa.position.x + playa.radius + playa.velocity.x - 4 >= MotherofSquare.position.x &&
       playa.position.x - playa.radius + playa.velocity.x + 4 <= MotherofSquare.position.x + MotherofSquare.width
     ) {
+
       playa.velocity.y = 0
       playa.velocity.x = 0
+
     }
   })
 
