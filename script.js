@@ -4,38 +4,38 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 /* Textures */
 let Ground = new Image()
-Ground.src = 'block.png'
+Ground.src = './img/block.png'
 let Mystery = new Image()
-Mystery.src = 'Surprise2.png'
+Mystery.src = './img/Surprise2.png'
 
 let PipeHeadLeft = new Image()
-PipeHeadLeft.src = 'HeadPipe_Left.png'
+PipeHeadLeft.src = './img/HeadPipe_Left.png'
 
 let PipeHeadCenter = new Image()
-PipeHeadCenter.src = 'HeadPipe_Middle.png'
+PipeHeadCenter.src = './img/HeadPipe_Middle.png'
 
 let PipeHeadRight = new Image()
-PipeHeadRight.src = 'HeadPipe_Right.png'
+PipeHeadRight.src = './img/HeadPipe_Right.png'
 
 let PipeBodyLeft = new Image()
-PipeBodyLeft.src = 'BodyPipe_Left.png'
+PipeBodyLeft.src = './img/BodyPipe_Left.png'
 
 let PipeBodyRight = new Image()
-PipeBodyRight.src = 'BodyPipe_Right.png'
+PipeBodyRight.src = './img/BodyPipe_Right.png'
 
 function MysteryBox() {
 
   setTimeout(() => {
-    Mystery.src = 'Surprise3.png'
+    Mystery.src = './img/Surprise3.png'
   }, 400);
   setTimeout(() => {
-    Mystery.src = 'Surprise.png'
+    Mystery.src = './img/Surprise.png'
   }, 550);
   setTimeout(() => {
-    Mystery.src = 'Surprise3.png'
+    Mystery.src = './img/Surprise3.png'
   }, 700);
   setTimeout(() => {
-    Mystery.src = 'Surprise2.png'
+    Mystery.src = './img/Surprise2.png'
   }, 850);
 
 }
@@ -223,21 +223,15 @@ map.forEach((row, i) => {
 })
 /* Keys */
 const keys = {
-  z: {
+  Left: {
     pressed: false
   },
-  q: {
-    pressed: false
-  },
-  d: {
-    pressed: false
-  },
-  s: {
+  Right: {
     pressed: false
   }
 
 }
-let lastkey = ''
+
 /* Animation Call for (Update And Clear Funcs) */
 function animate() {
   requestAnimationFrame(animate)
@@ -245,32 +239,35 @@ function animate() {
   Squares.forEach((MotherofSquare) => {
     MotherofSquare.draw()
     if (
-      playa.position.y - playa.radius + playa.velocity.y + 4 <= MotherofSquare.position.y + MotherofSquare.height &&
-      playa.position.y + playa.radius + playa.velocity.y - 4 >= MotherofSquare.position.y &&
-      playa.position.x + playa.radius + playa.velocity.x - 4 >= MotherofSquare.position.x &&
-      playa.position.x - playa.radius + playa.velocity.x + 4 <= MotherofSquare.position.x + MotherofSquare.width
-    ) {
-
+      playa.position.y + playa.radius + playa.velocity.y >= MotherofSquare.position.y &&
+      playa.position.y + playa.radius <= MotherofSquare.position.y + MotherofSquare.height &&
+      playa.position.x + playa.radius >= MotherofSquare.position.x &&
+      playa.position.x - playa.radius <= MotherofSquare.position.x + MotherofSquare.width) {
       playa.velocity.y = 0
-      playa.velocity.x = 0
-
     }
   })
 
 
+
+
+
   playa.update()
+  Squares.forEach((MotherofSquare) => {
 
+    if (keys.Right.pressed && playa.position.x < 600) {
+      playa.velocity.x = 10
+    } else if (keys.Left.pressed && playa.position.x > 100) {
+      playa.velocity.x = -10
+    } else {
+      playa.velocity.x = 0
+      if (keys.Right.pressed) {
+        MotherofSquare.position.x -= 10
 
-
-  playa.velocity.x = 0
-  if (keys.d.pressed && lastkey === 'd') {
-    playa.velocity.x = 5
-  } else if (keys.q.pressed && lastkey === 'q') {
-    playa.velocity.x = -5
-  } else if (keys.z.pressed && lastkey === 'z') {
-    playa.velocity.y = -5
-  }
-
+      } else if (keys.Left.pressed) {
+        MotherofSquare.position.x += 10
+      }
+    }
+  })
 }
 animate()
 
@@ -278,43 +275,28 @@ animate()
 addEventListener('keydown', ({ key }) => {
   switch (key) {
     case 'z':
-      keys.z.pressed = true
-      lastkey = 'z'
+      playa.velocity.y = -10
       break;
     case 'd':
-      keys.d.pressed = true
-      lastkey = 'd'
-      break;
-    case 's':
-      keys.s.pressed = true
-      lastkey = 's'
+      keys.Right.pressed = true
       break;
     case 'q':
-      keys.q.pressed = true
-      lastkey = 'q'
+      keys.Left.pressed = true
       break;
-
-
   }
 })
 
 addEventListener('keyup', ({ key }) => {
   switch (key) {
     case 'z':
-      keys.z.pressed = false
-
+      keys.z.pressed = true
+      playa.velocity.y = 0
       break;
     case 'd':
-      keys.d.pressed = false
-
-      break;
-    case 's':
-      keys.s.pressed = false
-
+      keys.Right.pressed = false
       break;
     case 'q':
-      keys.q.pressed = false
-
+      keys.Left.pressed = false
       break;
 
 
