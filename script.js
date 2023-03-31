@@ -82,7 +82,7 @@ class player {
     this.draw()
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
-
+    playa.velocity.y += gravity
 
   }
 }
@@ -166,9 +166,9 @@ map.forEach((row, i) => {
             x: MotherofSquare.width * j - 17,
             y: MotherofSquare.height * i
           },
-          image: PipeHeadLeft,
           width: 80,
-          height: 63
+          height: 63,
+          image: PipeHeadLeft
         }))
         break;
       case '_':
@@ -261,7 +261,7 @@ function animate() {
   playa.update()
 
 
-  playa.velocity.y += gravity
+
   playa.velocity.x = 0
   if (keys.d.pressed && lastkey === 'd') {
     playa.velocity.x = 5
