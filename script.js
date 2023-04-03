@@ -231,7 +231,7 @@ const keys = {
   }
 
 }
-
+let ScrollOffSet = 0
 /* Animation Call for (Update And Clear Funcs) */
 function animate() {
   requestAnimationFrame(animate)
@@ -261,6 +261,7 @@ function animate() {
     } else {
       playa.velocity.x = 0
       if (keys.Right.pressed) {
+
         MotherofSquare.position.x -= 10
 
       } else if (keys.Left.pressed) {
