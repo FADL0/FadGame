@@ -1,3 +1,4 @@
+
 let canvas = document.querySelector("canvas")
 let c = canvas.getContext("2d")
 canvas.width = 1000
@@ -15,25 +16,41 @@ Bush1.src = './img/Bush1.png'
 
 /* Character Animations */
 let tempAnim = 400
+const idle1 = "./img/Character/idle/I2.png"
+const idle2 = "./img/Character/idle/I3.png"
+const idle3 = "./img/Character/idle/I4.png"
+const idle4 = "./img/Character/idle/I1.png"
+
+const RunR1 = "./img/Character/Run/R2.png"
+const RunR2 = "./img/Character/Run/R3.png"
+const RunR3 = "./img/Character/Run/R4.png"
+const RunR4 = "./img/Character/Run/R1.png"
+
+const RunL1 = "./img/Character/Run/L2.png"
+const RunL2 = "./img/Character/Run/L3.png"
+const RunL3 = "./img/Character/Run/L4.png"
+const RunL4 = "./img/Character/Run/L1.png"
+
+
 function idle() {
 
-  Frame1 = "./img/Character/idle/I2.png"
-  Frame2 = "./img/Character/idle/I3.png"
-  Frame3 = "./img/Character/idle/I4.png"
-  Frame4 = "./img/Character/idle/I1.png"
+  Frame1 = idle1
+  Frame2 = idle2
+  Frame3 = idle3
+  Frame4 = idle4
 
 }
 function RunRight() {
-  Frame1 = "./img/Character/Run/R2.png"
-  Frame2 = "./img/Character/Run/R3.png"
-  Frame3 = "./img/Character/Run/R4.png"
-  Frame4 = "./img/Character/Run/R1.png"
+  Frame1 = RunR1
+  Frame2 = RunR2
+  Frame3 = RunR3
+  Frame4 = RunR4
 }
 function RunLeft() {
-  Frame1 = "./img/Character/Run/L2.png"
-  Frame2 = "./img/Character/Run/L3.png"
-  Frame3 = "./img/Character/Run/L4.png"
-  Frame4 = "./img/Character/Run/L1.png"
+  Frame1 = RunL1
+  Frame2 = RunL2
+  Frame3 = RunL3
+  Frame4 = RunL4
 }
 /* Idle */
 let Player = new Image()
@@ -60,6 +77,18 @@ function PlayerAnimation() {
     Player.src = Frame4
   }, 400);
 }
+Frame1 = idle1
+Frame2 = idle2
+Frame3 = idle3
+Frame4 = idle4
+Frame1 = RunR1
+Frame2 = RunR2
+Frame3 = RunR3
+Frame4 = RunR4
+Frame1 = RunL1
+Frame2 = RunL2
+Frame3 = RunL3
+Frame4 = RunL4
 setInterval(function () { PlayerAnimation() }, tempAnim);
 let gravity = 0.5
 /* Map Class */
@@ -115,7 +144,9 @@ class Background {
   }
 }
 /* Initialize */
+let ScrollOffSet = 0
 function initialize() {
+  ScrollOffSet = 0
   Backgrounda = []
   Squares = []
   Decors = []
@@ -281,7 +312,6 @@ const keys = {
 
 }
 let jumped = true
-let ScrollOffSet = 0
 /* Animation Call for (Update And Clear Funcs) */
 function animate() {
   requestAnimationFrame(animate)
@@ -311,8 +341,10 @@ function animate() {
   if (keys.Right.pressed && playa.position.x < 800) {
     playa.velocity.x = playa.speed
     RunRight()
-  } else if (keys.Left.pressed && playa.position.x > 100) {
+  } else if ((keys.Left.pressed && playa.position.x > 100) ||
+    (keys.Left.pressed && playa.position.x > 0 && ScrollOffSet === 0)) {
     playa.velocity.x = -playa.speed
+
     RunLeft()
   } else {
     playa.velocity.x = 0
@@ -322,9 +354,11 @@ function animate() {
 
       if (keys.Right.pressed) {
         MotherofSquare.position.x -= playa.speed
+        ScrollOffSet += playa.speed
         RunRight()
-      } else if (keys.Left.pressed) {
+      } else if (keys.Left.pressed && ScrollOffSet > 0) {
         MotherofSquare.position.x += playa.speed
+        ScrollOffSet -= playa.speed
         RunLeft()
 
       }
@@ -335,7 +369,7 @@ function animate() {
       if (keys.Right.pressed) {
         MotherofSquare.position.x -= playa.speed
         RunRight()
-      } else if (keys.Left.pressed) {
+      } else if (keys.Left.pressed && ScrollOffSet > 0) {
         MotherofSquare.position.x += playa.speed
         RunLeft()
 
@@ -348,12 +382,13 @@ function animate() {
         MotherofSquare.position.x -= playa.speed * .20
         RunRight()
       } else if (keys.Left.pressed) {
-        MotherofSquare.position.x += playa.speed * .20
+        if (ScrollOffSet > 0) { MotherofSquare.position.x += playa.speed * .20 }
+
         RunLeft()
 
       }
     })
-
+    console.log(ScrollOffSet);
   }
   playa.update()
 }
@@ -370,13 +405,14 @@ addEventListener('keydown', ({ key }) => {
 
       break;
     case 'd':
+      console.log(ScrollOffSet);
       keys.Right.pressed = true
 
 
       break;
     case 'q':
       keys.Left.pressed = true
-
+      console.log(ScrollOffSet);
       break;
   }
 })
