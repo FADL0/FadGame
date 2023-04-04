@@ -1,50 +1,70 @@
 let canvas = document.querySelector("canvas")
 let c = canvas.getContext("2d")
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = 1000
+canvas.height = 850
 /* Textures */
-let Ground = new Image()
-Ground.src = './img/block.png'
-let Mystery = new Image()
-Mystery.src = './img/Surprise2.png'
-
-let PipeHeadLeft = new Image()
-PipeHeadLeft.src = './img/HeadPipe_Left.png'
-
-let PipeHeadCenter = new Image()
-PipeHeadCenter.src = './img/HeadPipe_Middle.png'
-
-let PipeHeadRight = new Image()
-PipeHeadRight.src = './img/HeadPipe_Right.png'
-
-let PipeBodyLeft = new Image()
-PipeBodyLeft.src = './img/BodyPipe_Left.png'
-
-let PipeBodyRight = new Image()
-PipeBodyRight.src = './img/BodyPipe_Right.png'
-
-function MysteryBox() {
-
-  setTimeout(() => {
-    Mystery.src = './img/Surprise3.png'
-  }, 400);
-  setTimeout(() => {
-    Mystery.src = './img/Surprise.png'
-  }, 550);
-  setTimeout(() => {
-    Mystery.src = './img/Surprise3.png'
-  }, 700);
-  setTimeout(() => {
-    Mystery.src = './img/Surprise2.png'
-  }, 850);
-
+function createImage(ImageSrc) {
+  let image = new Image()
+  image.src = ImageSrc
+  return image
 }
 
-setInterval(function () { MysteryBox() }, 1200);
+let Bush1 = new Image()
+Bush1.src = './img/Bush1.png'
+
+
+/* Character Animations */
+let tempAnim = 400
+function idle() {
+
+  Frame1 = "./img/Character/idle/I2.png"
+  Frame2 = "./img/Character/idle/I3.png"
+  Frame3 = "./img/Character/idle/I4.png"
+  Frame4 = "./img/Character/idle/I1.png"
+
+}
+function RunRight() {
+  Frame1 = "./img/Character/Run/R2.png"
+  Frame2 = "./img/Character/Run/R3.png"
+  Frame3 = "./img/Character/Run/R4.png"
+  Frame4 = "./img/Character/Run/R1.png"
+}
+function RunLeft() {
+  Frame1 = "./img/Character/Run/L2.png"
+  Frame2 = "./img/Character/Run/L3.png"
+  Frame3 = "./img/Character/Run/L4.png"
+  Frame4 = "./img/Character/Run/L1.png"
+}
+/* Idle */
+let Player = new Image()
+Player.src = './img/Character/idle/I1.png'
+let Frame1 = "./img/Character/idle/I2.png"
+let Frame2 = "./img/Character/idle/I3.png"
+let Frame3 = "./img/Character/idle/I4.png"
+let Frame4 = "./img/Character/idle/I1.png"
+
+
+/* Run Right */
+
+function PlayerAnimation() {
+  setTimeout(() => {
+    Player.src = Frame1
+  }, 100);
+  setTimeout(() => {
+    Player.src = Frame2
+  }, 200);
+  setTimeout(() => {
+    Player.src = Frame3
+  }, 300);
+  setTimeout(() => {
+    Player.src = Frame4
+  }, 400);
+}
+setInterval(function () { PlayerAnimation() }, tempAnim);
 let gravity = 0.5
 /* Map Class */
 class MotherofSquare {
-  static width = 62
+  static width = 63
   static height = 63
 
   constructor({ position, image, width, height }) {
@@ -56,33 +76,160 @@ class MotherofSquare {
   }
 
   draw() {
-    /* c.fillStyle = 'red'
-    c.fillRect(this.position.x, this.position.y, this.width, this.height)
-  */
     c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
   }
 }
+
+/* Decorations */
+class Decorations {
+  static width = 63
+  static height = 64
+  constructor({ position, image }) {
+    this.position = position
+    this.width = image.width
+    this.height = image.height
+    this.image = image
+
+  }
+
+  draw() {
+    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+  }
+}
+
+/* Background */
+class Background {
+  static width = 63
+  static height = 64
+  constructor({ position, image }) {
+    this.position = position
+    this.width = image.width
+    this.height = image.height
+    this.image = image
+
+  }
+
+  draw() {
+    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+  }
+}
+/* Initialize */
+function initialize() {
+  Backgrounda = []
+  Squares = []
+  Decors = []
+  playa = new player({
+    position: {
+      x: MotherofSquare.width * 2,
+      y: MotherofSquare.height * 2
+
+    },
+    velocity: {
+      x: 0,
+      y: 0
+    },
+
+  })
+  /* Loop MapCreation */
+
+  map.forEach((row, i) => {
+    row.forEach((tag, j) => {
+      switch (tag) {
+        case 'G':
+          Squares.push(new MotherofSquare({
+            position: {
+              x: MotherofSquare.width * j,
+              y: MotherofSquare.height * i
+
+            },
+            image: createImage('./img/Ground_Block.png'),
+            width: 63,
+            height: 63
+          }))
+          break;
+        case 'H':
+          Squares.push(new MotherofSquare({
+            position: {
+              x: MotherofSquare.width * j,
+              y: MotherofSquare.height * i
+
+            },
+            image: createImage('./img/block.png'),
+            width: 63,
+            height: 63
+          }))
+          break;
+        case 'Z':
+          Squares.push(new MotherofSquare({
+            position: {
+              x: MotherofSquare.width * j,
+              y: MotherofSquare.height * i
+            },
+            image: createImage('./img/block.png'),
+            width: 63,
+            height: 63
+          }))
+          break;
+        case 'J':
+          Decors.push(new Decorations({
+            position: {
+              x: Decorations.width * j,
+              y: Decorations.height * i
+            },
+            image: createImage('./img/Bush1.png'),
+          }))
+          break;
+        case 'R':
+          Backgrounda.push(new Background({
+            position: {
+              x: 2592 * j,
+              y: Background.height * i
+            },
+            image: createImage('./img/Background.png'),
+          }))
+          break;
+        case 'L':
+          Backgrounda.push(new Background({
+            position: {
+              x: 2592 * j,
+              y: Background.height * i
+            },
+            image: createImage('./img/Background2.png'),
+          }))
+          break;
+
+      }
+    })
+  })
+}
+
+
 /* Player Class */
 class player {
   constructor({ position, velocity }) {
     this.position = position
     this.velocity = velocity
     this.radius = 45
+    this.image = Player
+    this.width = 78
+    this.height = 106
+    this.speed = 10
 
   }
   draw() {
-    c.beginPath()
-    c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
-    c.fillStyle = 'whitesmoke'
-    c.fill()
-    c.closePath()
+    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
 
   }
   update() {
     this.draw()
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
-    playa.velocity.y += gravity
+    if (this.position.y + this.height <= canvas.height) {
+      playa.velocity.y += gravity
+    } else {
+      initialize();
+    }
+
 
   }
 }
@@ -101,25 +248,26 @@ class Enemy {
 }
 /* Map */
 let map = [
-  ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+  ['R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
   ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '-', '-', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '-', '.', '', 'Z', '.', '.', 'G', 'Z', 'G', 'Z', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '<', '>', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '<|', '|>', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '<|', '|>', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '<|', '|>', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
-  ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
-  ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G']
+  ['-', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['-', '.', '-', '.', '', '', '.', '.', '', '', '', '', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['-', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['-', 'J', '.', '.', '.', '.', '.', '.', 'J', 'J', '.', '.', '.', '.', '.', '.', '.', 'J', 'J', '.', '.', '.', '.', '.', '.', 'J', '.', '.', '.', 'J', '-'],
+  ['', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.'],
+  ['', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', ''],
+  ['', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '', '']
 ]
 /* Insides of HTML */
-
+let Backgrounda = []
 let Squares = []
+let Decors = []
 let playa = new player({
   position: {
     x: MotherofSquare.width * 2,
@@ -132,95 +280,8 @@ let playa = new player({
   },
 
 })
-/* Loop MapCreation */
 
-map.forEach((row, i) => {
-  row.forEach((tag, j) => {
-    switch (tag) {
-      case 'G':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j,
-            y: MotherofSquare.height * i
-
-          },
-          image: Ground,
-          width: 63,
-          height: 63
-        }))
-        break;
-      case 'Z':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j,
-            y: MotherofSquare.height * i
-          },
-          image: Mystery,
-          width: 63,
-          height: 63
-        }))
-        break;
-      case '<':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j - 17,
-            y: MotherofSquare.height * i
-          },
-          width: 80,
-          height: 63,
-          image: PipeHeadLeft
-        }))
-        break;
-      case '_':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j,
-            y: MotherofSquare.height * i
-          },
-          image: PipeHeadCenter,
-          width: 63,
-          height: 63
-        }))
-        break;
-      case '>':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j,
-            y: MotherofSquare.height * i
-          },
-          image: PipeHeadRight,
-          width: 80,
-          height: 63
-        }))
-        break;
-      case '|>':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j,
-            y: MotherofSquare.height * i
-          },
-          image: PipeBodyRight,
-          width: 63,
-          height: 63,
-          width: 63,
-          height: 63
-        }))
-        break;
-      case '<|':
-        Squares.push(new MotherofSquare({
-          position: {
-            x: MotherofSquare.width * j,
-            y: MotherofSquare.height * i
-          },
-          image: PipeBodyLeft,
-          width: 63,
-          height: 63
-        }))
-        break;
-
-    }
-  })
-})
+initialize()
 /* Keys */
 const keys = {
   Left: {
@@ -231,44 +292,82 @@ const keys = {
   }
 
 }
+let jumped = false
 let ScrollOffSet = 0
 /* Animation Call for (Update And Clear Funcs) */
 function animate() {
   requestAnimationFrame(animate)
-  c.clearRect(0, 0, canvas.width, canvas.height)
+  c.fillStyle = "whiteSmoke"
+  c.fillRect(0, 0, canvas.width, canvas.height)
+
+  Backgrounda.forEach((Background) => {
+    Background.draw()
+  })
+  Decors.forEach((Decorations) => {
+    Decorations.draw()
+  })
   Squares.forEach((MotherofSquare) => {
     MotherofSquare.draw()
-    if (
-      playa.position.y + playa.radius + playa.velocity.y >= MotherofSquare.position.y &&
-      playa.position.y + playa.radius <= MotherofSquare.position.y + MotherofSquare.height &&
-      playa.position.x + playa.radius >= MotherofSquare.position.x &&
-      playa.position.x - playa.radius <= MotherofSquare.position.x + MotherofSquare.width) {
+    if (playa.position.y + playa.height + playa.velocity.y >= MotherofSquare.position.y &&
+      playa.position.y + playa.height <= MotherofSquare.position.y &&
+      playa.position.x + playa.width >= MotherofSquare.position.x &&
+      playa.position.x + playa.velocity.x <= MotherofSquare.position.x + MotherofSquare.width
+
+    ) {
       playa.velocity.y = 0
+      jumped = true
     }
   })
 
 
+  if (keys.Right.pressed && playa.position.x < 800) {
+    playa.velocity.x = playa.speed
+    RunRight()
+  } else if (keys.Left.pressed && playa.position.x > 100) {
+    playa.velocity.x = -playa.speed
+    RunLeft()
+  } else {
+    playa.velocity.x = 0
+    idle()
+    Squares.forEach((MotherofSquare) => {
 
 
-
-  playa.update()
-  Squares.forEach((MotherofSquare) => {
-
-    if (keys.Right.pressed && playa.position.x < 600) {
-      playa.velocity.x = 10
-    } else if (keys.Left.pressed && playa.position.x > 100) {
-      playa.velocity.x = -10
-    } else {
-      playa.velocity.x = 0
       if (keys.Right.pressed) {
-
-        MotherofSquare.position.x -= 10
-
+        MotherofSquare.position.x -= playa.speed
+        RunRight()
       } else if (keys.Left.pressed) {
-        MotherofSquare.position.x += 10
+        MotherofSquare.position.x += playa.speed
+        RunLeft()
+
       }
-    }
-  })
+    })
+    Decors.forEach((MotherofSquare) => {
+
+
+      if (keys.Right.pressed) {
+        MotherofSquare.position.x -= playa.speed
+        RunRight()
+      } else if (keys.Left.pressed) {
+        MotherofSquare.position.x += playa.speed
+        RunLeft()
+
+      }
+    })
+    Backgrounda.forEach((MotherofSquare) => {
+
+
+      if (keys.Right.pressed) {
+        MotherofSquare.position.x -= playa.speed * .20
+        RunRight()
+      } else if (keys.Left.pressed) {
+        MotherofSquare.position.x += playa.speed * .20
+        RunLeft()
+
+      }
+    })
+
+  }
+  playa.update()
 }
 animate()
 
@@ -276,28 +375,33 @@ animate()
 addEventListener('keydown', ({ key }) => {
   switch (key) {
     case 'z':
-      playa.velocity.y = -10
+      if (jumped == true) {
+        playa.velocity.y = -15
+        jumped = false
+      }
+
       break;
     case 'd':
       keys.Right.pressed = true
+
+
       break;
     case 'q':
       keys.Left.pressed = true
+
       break;
   }
 })
 
 addEventListener('keyup', ({ key }) => {
   switch (key) {
-    case 'z':
-      keys.z.pressed = true
-      playa.velocity.y = 0
-      break;
     case 'd':
       keys.Right.pressed = false
+
       break;
     case 'q':
       keys.Left.pressed = false
+
       break;
 
 
