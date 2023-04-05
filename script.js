@@ -378,46 +378,69 @@ function animate() {
 
       }
     })
-    console.log(ScrollOffSet);
+
   }
   playa.update()
 }
 animate()
 
 /* Keys EventListener */
-addEventListener('keydown', ({ key }) => {
-  switch (key) {
-    case 'z':
+let CaseUp = 'KeyW'
+let CaseLeft = 'KeyA'
+let CaseRight = 'KeyD'
+addEventListener('keydown', ({ code }) => {
+
+  switch (code) {
+    case CaseUp:
       if (jumped == true) {
         playa.velocity.y = -15
         jumped = false
       }
 
       break;
-    case 'd':
-      console.log(ScrollOffSet);
+    case CaseRight:
+
       keys.Right.pressed = true
 
 
       break;
-    case 'q':
+    case CaseLeft:
       keys.Left.pressed = true
-      console.log(ScrollOffSet);
+
       break;
   }
 })
 
-addEventListener('keyup', ({ key }) => {
-  switch (key) {
-    case 'd':
+addEventListener('keyup', ({ code }) => {
+  switch (code) {
+    case CaseRight:
       keys.Right.pressed = false
 
       break;
-    case 'q':
+    case CaseLeft:
       keys.Left.pressed = false
 
       break;
 
 
   }
+})
+/* Change To Arrows */
+let Arrows = document.querySelector(".Real")
+Arrows.addEventListener('click', function () {
+  if (CaseUp === 'KeyW') {
+    CaseUp = 'ArrowUp'
+    CaseLeft = 'ArrowLeft'
+    CaseRight = 'ArrowRight'
+    Arrows.classList.add('Real2')
+    Arrows.classList.remove('Real')
+
+  } else if (CaseUp === 'ArrowUp') {
+    CaseUp = 'KeyW'
+    CaseLeft = 'KeyA'
+    CaseRight = 'KeyD'
+    Arrows.classList.add('Real')
+    Arrows.classList.remove('Real2')
+  }
+
 })
