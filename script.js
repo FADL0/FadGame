@@ -444,3 +444,11 @@ Arrows.addEventListener('click', function () {
   }
 
 })
+/* Settings Icon */
+let Gear = document.querySelector(".LTG")
+let Menu = document.querySelector(".SettingsMenu")
+Gear.addEventListener('click', function () {
+  Menu.classList.toggle('SettingsMenu2')
+
+
+})

@@ -7,6 +7,7 @@
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+    font-family: 'Aclonica';
 }
 
 body {
@@ -19,8 +20,14 @@ body {
 }
 
 div {
-    padding-right: 10%;
-    padding-left: 5%;
+    padding-right: 5%;
+    padding-left: 15%;
+
+}
+
+div img {
+    width: 50px;
+    cursor: pointer;
 }
 
 .Real {
@@ -31,4 +38,32 @@ div {
 .Real2 {
     content: url('./img/Arrows.png');
     cursor: pointer;
+}
+
+.SettingsMenu {
+    display: none;
+    text-align: center;
+    border-radius: 20px;
+    position: fixed;
+    right: 40%;
+    background-color: rgba(227, 227, 226, 0.437);
+    width: 500px;
+    height: 600px;
+}
+
+.SettingsMenu2 {
+    display: block;
+
+}
+
+.SettingsMenu h1 {
+
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.SettingsMenu img {
+
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
