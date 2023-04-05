@@ -302,6 +302,7 @@ const keys = {
 }
 let jumped = true
 /* Animation Call for (Update And Clear Funcs) */
+initialize()
 function animate() {
   requestAnimationFrame(animate)
   c.fillStyle = "whiteSmoke"
