@@ -1,8 +1,9 @@
 
 let canvas = document.querySelector("canvas")
 let c = canvas.getContext("2d")
-canvas.width = 1000
-canvas.height = 850
+canvas.width = 1200
+canvas.height = 950
+
 /* Textures */
 function createImage(ImageSrc) {
   let image = new Image()
@@ -24,12 +25,12 @@ function MoveLeft() {
 
 }
 
-let gravity = 0.5
+let gravity = 0.6
 /* Map Class */
 class CollisionSquares {
   static width = 10
-  static height = 63
-  static RealMultiplier = 600
+  static height = 58
+  static RealMultiplier = 6
 
   constructor({ position, image }) {
     this.position = position
@@ -47,7 +48,7 @@ class CollisionSquares {
 /* Decorations */
 class Decorations {
   static width = 63
-  static height = 64
+  static height = 63
   constructor({ position, image }) {
     this.position = position
     this.width = image.width
@@ -64,7 +65,7 @@ class Decorations {
 /* Background */
 class Background {
   static width = 0
-  static height = 64
+  static height = 0
   constructor({ position, image }) {
     this.position = position
     this.width = image.width
@@ -234,12 +235,12 @@ let map = [
   ['-', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '-', '.', '', '', '.', '.', '', '', '', '', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', 'J', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'J', '.', '.', '.', 'J', '-', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['G', '', 'G', '.', '', 'G', '.', '.', '.', '.', 'G', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '', '', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-']
+  ['', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '', 'G', '.', '.', '.', '.', '.', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'J', '.', '.', '.', 'J', '-', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['J', '', '', '.', 'G', 'G', '.', 'G', 'G', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '', '', '', '', '', '', '', '', '', '', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['G', '', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '', '', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-']
 ]
 /* Insides of HTML */
 let BackgroundImage = []
@@ -267,6 +268,9 @@ const keys = {
   },
   Right: {
     pressed: false
+  },
+  Down: {
+    pressed: false
   }
 
 }
@@ -292,65 +296,74 @@ function animate() {
       playa.position.x + playa.velocity.x <= CollisionSquares.position.x + CollisionSquares.width
 
     ) {
-      playa.velocity.y = 0
-      jumped = true
+
+      if (keys.Down.pressed && playa.position.y + playa.velocity.y < 543.6) {
+        keys.Down.pressed = false
+        playa.velocity.y = 5
+
+      } else {
+        playa.velocity.y = 0
+        jumped = true
+      }
+      console.log(playa.position.y);
+
     }
   })
 
-
-  if (keys.Right.pressed && playa.position.x < 400) {
-    playa.velocity.x = playa.speed
-
-  } else if ((keys.Left.pressed && playa.position.x > 100) ||
-    (keys.Left.pressed && playa.position.x > 0 && ScrollOffSet === 0)) {
-    playa.velocity.x = -playa.speed
-
-
-  } else {
+  if (keys.Left.pressed && keys.Right.pressed) {
+    column = 0
     playa.velocity.x = 0
+  } else
+    if (keys.Right.pressed && playa.position.x < 400) {
+      playa.velocity.x = playa.speed
+      column = 1
+    } else if ((keys.Left.pressed && playa.position.x > 100) ||
+      (keys.Left.pressed && playa.position.x > 0 && ScrollOffSet === 0)) {
+      playa.velocity.x = -playa.speed
+      column = 2
+    } else {
+      column = 0
+      playa.velocity.x = 0
 
-    Squares.forEach((CollisionSquares) => {
-
-
-      if (keys.Right.pressed) {
-        CollisionSquares.position.x -= playa.speed
-        ScrollOffSet += playa.speed
-
-
-      } else if (keys.Left.pressed && ScrollOffSet > 0) {
-        CollisionSquares.position.x += playa.speed
-        ScrollOffSet -= playa.speed
-
-
-      }
-    })
-    Decors.forEach((CollisionSquares) => {
+      Squares.forEach((CollisionSquares) => {
 
 
-      if (keys.Right.pressed) {
-        CollisionSquares.position.x -= playa.speed
+        if (keys.Right.pressed) {
+          CollisionSquares.position.x -= playa.speed
+          ScrollOffSet += playa.speed
+          column = 1
 
-      } else if (keys.Left.pressed && ScrollOffSet > 0) {
-        CollisionSquares.position.x += playa.speed
+        } else if (keys.Left.pressed && ScrollOffSet > 0) {
+          CollisionSquares.position.x += playa.speed
+          ScrollOffSet -= playa.speed
+          column = 2
+        }
+      })
+      Decors.forEach((CollisionSquares) => {
+        if (keys.Right.pressed) {
+          CollisionSquares.position.x -= playa.speed
+          column = 1
+        } else if (keys.Left.pressed && ScrollOffSet > 0) {
+          CollisionSquares.position.x += playa.speed
+          column = 2
+          column = 2
+        }
+      })
+      BackgroundImage.forEach((CollisionSquares) => {
 
 
-      }
-    })
-    BackgroundImage.forEach((CollisionSquares) => {
+        if (keys.Right.pressed) {
+          CollisionSquares.position.x -= playa.speed * .20
+          column = 1
+        } else if (keys.Left.pressed) {
+          if (ScrollOffSet > 0) { CollisionSquares.position.x += playa.speed * .20 }
+          column = 2
 
 
-      if (keys.Right.pressed) {
-        CollisionSquares.position.x -= playa.speed * .20
+        }
+      })
 
-      } else if (keys.Left.pressed) {
-        if (ScrollOffSet > 0) { CollisionSquares.position.x += playa.speed * .20 }
-
-
-
-      }
-    })
-
-  }
+    }
 
   playa.update()
 }
@@ -360,6 +373,7 @@ animate()
 let CaseUp = 'KeyW'
 let CaseLeft = 'KeyA'
 let CaseRight = 'KeyD'
+let CaseDown = 'KeyS'
 addEventListener('keydown', ({ code }) => {
 
   switch (code) {
@@ -368,19 +382,17 @@ addEventListener('keydown', ({ code }) => {
         playa.velocity.y = -15
         jumped = false
       }
-
       break;
     case CaseRight:
-      column = 1
       keys.Right.pressed = true
-
-
       break;
     case CaseLeft:
       keys.Left.pressed = true
-      column = 2
-
       break;
+    case CaseDown:
+      keys.Down.pressed = true
+      break;
+
   }
 })
 
@@ -388,14 +400,13 @@ addEventListener('keyup', ({ code }) => {
   switch (code) {
     case CaseRight:
       keys.Right.pressed = false
-      column = 0
       break;
     case CaseLeft:
       keys.Left.pressed = false
-      column = 0
-
       break;
-
+    case CaseDown:
+      keys.Down.pressed = false
+      break;
 
   }
 })
