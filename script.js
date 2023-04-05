@@ -14,71 +14,16 @@ let Bush1 = new Image()
 Bush1.src = './img/Bush1.png'
 
 
-/* Character Animations */
-let tempAnim = 400
-const idle1 = "./img/Character/idle/I2.png"
-const idle2 = "./img/Character/idle/I3.png"
-const idle3 = "./img/Character/idle/I4.png"
-const idle4 = "./img/Character/idle/I1.png"
 
-const RunR1 = "./img/Character/Run/R2.png"
-const RunR2 = "./img/Character/Run/R3.png"
-const RunR3 = "./img/Character/Run/R4.png"
-const RunR4 = "./img/Character/Run/R1.png"
-
-const RunL1 = "./img/Character/Run/L2.png"
-const RunL2 = "./img/Character/Run/L3.png"
-const RunL3 = "./img/Character/Run/L4.png"
-const RunL4 = "./img/Character/Run/L1.png"
-
-
-function idle() {
-
-  Frame1 = idle1
-  Frame2 = idle2
-  Frame3 = idle3
-  Frame4 = idle4
-
-}
-function RunRight() {
-  Frame1 = RunR1
-  Frame2 = RunR2
-  Frame3 = RunR3
-  Frame4 = RunR4
-}
-function RunLeft() {
-  Frame1 = RunL1
-  Frame2 = RunL2
-  Frame3 = RunL3
-  Frame4 = RunL4
-}
-/* Idle */
 let Player = new Image()
-Player.src = './img/Character/idle/I1.png'
-let Frame1 = "./img/Character/idle/I2.png"
-let Frame2 = "./img/Character/idle/I3.png"
-let Frame3 = "./img/Character/idle/I4.png"
-let Frame4 = "./img/Character/idle/I1.png"
+Player.src = 'img/Character/Run/GojoSprite2.png'
 
 
-/* Run Right */
+function MoveLeft() {
 
-function PlayerAnimation() {
-  setTimeout(() => {
-    Player.src = Frame1
-  }, 100);
-  setTimeout(() => {
-    Player.src = Frame2
-  }, 200);
-  setTimeout(() => {
-    Player.src = Frame3
-  }, 300);
-  setTimeout(() => {
-    Player.src = Frame4
-  }, 400);
+
 }
 
-setInterval(function () { PlayerAnimation() }, tempAnim);
 let gravity = 0.5
 /* Map Class */
 class CollisionSquares {
@@ -213,25 +158,42 @@ function initialize() {
 
 
 /* Player Class */
+
+let row = 1
+let column = 0
 class player {
   constructor({ position, velocity }) {
     this.position = position
     this.velocity = velocity
+
     this.radius = 45
     this.image = Player
-    this.width = 78
-    this.height = 106
+    this.width = 155.5
+    this.height = 267
     this.speed = 10
 
   }
   draw() {
-    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+    c.drawImage(this.image,
+      this.width * row,
+      this.height * column,
+      this.width,
+      this.height,
+      this.position.x,
+      this.position.y + 15,
+      this.width,
+      this.height)
 
   }
   update() {
+
+
+
     this.draw()
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
+
+
     if (this.position.y + this.height <= canvas.height) {
       playa.velocity.y += gravity
     } else {
@@ -241,6 +203,13 @@ class player {
 
   }
 }
+setInterval(() => {
+  if (row === 1) {
+    row = 0
+  } else {
+    row++
+  }
+}, 250);
 /* Enemy Class */
 
 class Enemy {
@@ -286,6 +255,7 @@ let playa = new player({
     x: 0,
     y: 0
   },
+  row: 0
 
 })
 
@@ -328,28 +298,29 @@ function animate() {
   })
 
 
-  if (keys.Right.pressed && playa.position.x < 800) {
+  if (keys.Right.pressed && playa.position.x < 400) {
     playa.velocity.x = playa.speed
-    RunRight()
+
   } else if ((keys.Left.pressed && playa.position.x > 100) ||
     (keys.Left.pressed && playa.position.x > 0 && ScrollOffSet === 0)) {
     playa.velocity.x = -playa.speed
 
-    RunLeft()
+
   } else {
     playa.velocity.x = 0
-    idle()
+
     Squares.forEach((CollisionSquares) => {
 
 
       if (keys.Right.pressed) {
         CollisionSquares.position.x -= playa.speed
         ScrollOffSet += playa.speed
-        RunRight()
+
+
       } else if (keys.Left.pressed && ScrollOffSet > 0) {
         CollisionSquares.position.x += playa.speed
         ScrollOffSet -= playa.speed
-        RunLeft()
+
 
       }
     })
@@ -358,10 +329,10 @@ function animate() {
 
       if (keys.Right.pressed) {
         CollisionSquares.position.x -= playa.speed
-        RunRight()
+
       } else if (keys.Left.pressed && ScrollOffSet > 0) {
         CollisionSquares.position.x += playa.speed
-        RunLeft()
+
 
       }
     })
@@ -370,16 +341,17 @@ function animate() {
 
       if (keys.Right.pressed) {
         CollisionSquares.position.x -= playa.speed * .20
-        RunRight()
+
       } else if (keys.Left.pressed) {
         if (ScrollOffSet > 0) { CollisionSquares.position.x += playa.speed * .20 }
 
-        RunLeft()
+
 
       }
     })
 
   }
+
   playa.update()
 }
 animate()
@@ -399,13 +371,14 @@ addEventListener('keydown', ({ code }) => {
 
       break;
     case CaseRight:
-
+      column = 1
       keys.Right.pressed = true
 
 
       break;
     case CaseLeft:
       keys.Left.pressed = true
+      column = 2
 
       break;
   }
@@ -415,10 +388,11 @@ addEventListener('keyup', ({ code }) => {
   switch (code) {
     case CaseRight:
       keys.Right.pressed = false
-
+      column = 0
       break;
     case CaseLeft:
       keys.Left.pressed = false
+      column = 0
 
       break;
 
