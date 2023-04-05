@@ -77,22 +77,11 @@ function PlayerAnimation() {
     Player.src = Frame4
   }, 400);
 }
-Frame1 = idle1
-Frame2 = idle2
-Frame3 = idle3
-Frame4 = idle4
-Frame1 = RunR1
-Frame2 = RunR2
-Frame3 = RunR3
-Frame4 = RunR4
-Frame1 = RunL1
-Frame2 = RunL2
-Frame3 = RunL3
-Frame4 = RunL4
+
 setInterval(function () { PlayerAnimation() }, tempAnim);
 let gravity = 0.5
 /* Map Class */
-class MotherofSquare {
+class CollisionSquares {
   static width = 10
   static height = 63
   static RealMultiplier = 600
@@ -147,13 +136,13 @@ class Background {
 let ScrollOffSet = 0
 function initialize() {
   ScrollOffSet = 0
-  Backgrounda = []
+  BackgroundImage = []
   Squares = []
   Decors = []
   playa = new player({
     position: {
-      x: MotherofSquare.width,
-      y: MotherofSquare.height
+      x: CollisionSquares.width,
+      y: CollisionSquares.height
 
     },
     velocity: {
@@ -168,10 +157,10 @@ function initialize() {
     row.forEach((tag, j) => {
       switch (tag) {
         case 'G':
-          Squares.push(new MotherofSquare({
+          Squares.push(new CollisionSquares({
             position: {
-              x: (MotherofSquare.width + 700) * j,
-              y: MotherofSquare.height * i
+              x: (CollisionSquares.width + 700) * j,
+              y: CollisionSquares.height * i
 
             },
             image: createImage('./img/Ground_Block.png'),
@@ -180,10 +169,10 @@ function initialize() {
           break;
 
         case 'Z':
-          Squares.push(new MotherofSquare({
+          Squares.push(new CollisionSquares({
             position: {
-              x: MotherofSquare.width * j,
-              y: MotherofSquare.height * i
+              x: CollisionSquares.width * j,
+              y: CollisionSquares.height * i
             },
             image: createImage('./img/block.png'),
 
@@ -199,7 +188,7 @@ function initialize() {
           }))
           break;
         case 'R':
-          Backgrounda.push(new Background({
+          BackgroundImage.push(new Background({
             position: {
               x: 2592 * j,
               y: Background.height * i
@@ -208,7 +197,7 @@ function initialize() {
           }))
           break;
         case 'L':
-          Backgrounda.push(new Background({
+          BackgroundImage.push(new Background({
             position: {
               x: 2592 * j,
               y: Background.height * i
@@ -284,13 +273,13 @@ let map = [
   ['', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '', '', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-']
 ]
 /* Insides of HTML */
-let Backgrounda = []
+let BackgroundImage = []
 let Squares = []
 let Decors = []
 let playa = new player({
   position: {
-    x: MotherofSquare.width * 2,
-    y: MotherofSquare.height * 2
+    x: CollisionSquares.width * 2,
+    y: CollisionSquares.height * 2
 
   },
   velocity: {
@@ -318,18 +307,18 @@ function animate() {
   c.fillStyle = "whiteSmoke"
   c.fillRect(0, 0, canvas.width, canvas.height)
 
-  Backgrounda.forEach((Background) => {
+  BackgroundImage.forEach((Background) => {
     Background.draw()
   })
   Decors.forEach((Decorations) => {
     Decorations.draw()
   })
-  Squares.forEach((MotherofSquare) => {
-    MotherofSquare.draw()
-    if (playa.position.y + playa.height + playa.velocity.y >= MotherofSquare.position.y &&
-      playa.position.y + playa.height <= MotherofSquare.position.y &&
-      playa.position.x + playa.width >= MotherofSquare.position.x &&
-      playa.position.x + playa.velocity.x <= MotherofSquare.position.x + MotherofSquare.width
+  Squares.forEach((CollisionSquares) => {
+    CollisionSquares.draw()
+    if (playa.position.y + playa.height + playa.velocity.y >= CollisionSquares.position.y &&
+      playa.position.y + playa.height <= CollisionSquares.position.y &&
+      playa.position.x + playa.width >= CollisionSquares.position.x &&
+      playa.position.x + playa.velocity.x <= CollisionSquares.position.x + CollisionSquares.width
 
     ) {
       playa.velocity.y = 0
@@ -349,40 +338,40 @@ function animate() {
   } else {
     playa.velocity.x = 0
     idle()
-    Squares.forEach((MotherofSquare) => {
+    Squares.forEach((CollisionSquares) => {
 
 
       if (keys.Right.pressed) {
-        MotherofSquare.position.x -= playa.speed
+        CollisionSquares.position.x -= playa.speed
         ScrollOffSet += playa.speed
         RunRight()
       } else if (keys.Left.pressed && ScrollOffSet > 0) {
-        MotherofSquare.position.x += playa.speed
+        CollisionSquares.position.x += playa.speed
         ScrollOffSet -= playa.speed
         RunLeft()
 
       }
     })
-    Decors.forEach((MotherofSquare) => {
+    Decors.forEach((CollisionSquares) => {
 
 
       if (keys.Right.pressed) {
-        MotherofSquare.position.x -= playa.speed
+        CollisionSquares.position.x -= playa.speed
         RunRight()
       } else if (keys.Left.pressed && ScrollOffSet > 0) {
-        MotherofSquare.position.x += playa.speed
+        CollisionSquares.position.x += playa.speed
         RunLeft()
 
       }
     })
-    Backgrounda.forEach((MotherofSquare) => {
+    BackgroundImage.forEach((CollisionSquares) => {
 
 
       if (keys.Right.pressed) {
-        MotherofSquare.position.x -= playa.speed * .20
+        CollisionSquares.position.x -= playa.speed * .20
         RunRight()
       } else if (keys.Left.pressed) {
-        if (ScrollOffSet > 0) { MotherofSquare.position.x += playa.speed * .20 }
+        if (ScrollOffSet > 0) { CollisionSquares.position.x += playa.speed * .20 }
 
         RunLeft()
 
