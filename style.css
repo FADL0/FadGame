@@ -30,6 +30,17 @@ body {
     cursor: pointer;
 }
 
+.score {
+    color: whitesmoke;
+    position: fixed;
+    left: 50%;
+    top: 0;
+}
+
+.score span {
+    color: red;
+}
+
 .Real {
     content: url('./img/WSD.png');
     cursor: pointer;
