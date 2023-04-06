@@ -19,13 +19,13 @@ body {
     height: 100vh;
 }
 
-div {
+.YoYoYoItsHumpDay {
     padding-right: 5%;
     padding-left: 15%;
 
 }
 
-div img {
+.YoYoYoItsHumpDay img {
     width: 50px;
     cursor: pointer;
 }

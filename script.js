@@ -11,15 +11,12 @@ function createImage(ImageSrc) {
   return image
 }
 
-let Bush1 = new Image()
-Bush1.src = './img/Bush1.png'
 
-
-
+/*  */
 let Player = new Image()
 Player.src = 'img/Character/Run/GojoSprite2.png'
-
-
+let FadCoins = new Image()
+FadCoins.src = 'img/FadCoins.png'
 function MoveLeft() {
 
 
@@ -78,10 +75,40 @@ class Background {
     c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
   }
 }
+/* Coins */
+let CoinRow = 0
+let Column = 0
+let CoinAugmentation = 1
+class Coins {
+  static width = 100
+  static height = 55
+
+
+  constructor({ position, image }) {
+    this.position = position
+    this.width = 50
+    this.height = 86
+    this.image = image
+    this.Column = Column
+  }
+  draw() {
+    c.drawImage(this.image,
+      this.width * CoinRow,
+      this.height * this.Column,
+      this.width,
+      this.height,
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height)
+
+  }
+}
 /* Initialize */
 let ScrollOffSet = 0
 function initialize() {
   ScrollOffSet = 0
+  IntractableCoins = []
   BackgroundImage = []
   Squares = []
   Decors = []
@@ -151,6 +178,16 @@ function initialize() {
             image: createImage('./img/Background2.png'),
           }))
           break;
+        case 'C':
+          IntractableCoins.push(new Coins({
+            position: {
+              x: Coins.width * j,
+              y: Coins.height * i
+            },
+            image: createImage('img/FadCoins.png'),
+            Column: 0
+          }))
+          break;
 
       }
     })
@@ -162,15 +199,15 @@ function initialize() {
 
 let row = 1
 let column = 0
+let Augmentation = 1
 class player {
   constructor({ position, velocity }) {
     this.position = position
     this.velocity = velocity
-
     this.radius = 45
     this.image = Player
-    this.width = 155.5
-    this.height = 267
+    this.width = 134.5
+    this.height = 231.5
     this.speed = 10
 
   }
@@ -204,13 +241,21 @@ class player {
 
   }
 }
+/* Animations  */
 setInterval(() => {
   if (row === 1) {
     row = 0
   } else {
-    row++
+    row = row + Augmentation
   }
 }, 250);
+setInterval(() => {
+  if (CoinRow === 5) {
+    CoinRow = 0
+  } else {
+    CoinRow = CoinRow + Augmentation
+  }
+}, 150);
 /* Enemy Class */
 
 class Enemy {
@@ -226,7 +271,7 @@ class Enemy {
 }
 /* Map */
 let map = [
-  ['R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '-', '-', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
@@ -234,15 +279,16 @@ let map = [
   ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['-', '.', '-', '.', '', '', '.', '.', '', '', '', '', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['', '', 'G', '.', '.', '.', '.', '.', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'J', '.', '.', '.', 'J', '-', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', 'C', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '.', '.', '.', '.', '.', '.', '.', '-', '.', 'C', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '.', '', '.', '.', '.', '.', '.', '', 'C', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'J', '.', '.', '.', 'J', '-', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['J', '', '', '.', 'G', 'G', '.', 'G', 'G', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['', '', '', '', '', '', '', '', '', '', '', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['', '', '', '', '.', '.', '.', '.', '', '', '', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['G', '', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '', '', '', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-']
 ]
 /* Insides of HTML */
+let IntractableCoins = []
 let BackgroundImage = []
 let Squares = []
 let Decors = []
@@ -271,6 +317,9 @@ const keys = {
   },
   Down: {
     pressed: false
+  },
+  Up: {
+    pressed: false
   }
 
 }
@@ -284,6 +333,27 @@ function animate() {
 
   BackgroundImage.forEach((Background) => {
     Background.draw()
+  })
+  IntractableCoins.forEach((Coins) => {
+
+    Coins.draw()
+    if (playa.position.x + playa.width + playa.velocity.x >= Coins.position.x &&
+      playa.position.x + playa.velocity.x <= Coins.position.x + Coins.width &&
+      playa.position.y + playa.height + playa.velocity.y >= Coins.position.y &&
+      playa.position.y + playa.velocity.y <= Coins.position.y + Coins.height) {
+
+
+
+      IntractableCoins.forEach(() => {
+
+        Coins.Column = 1
+
+        setTimeout(() => {
+          Coins.Column = 2
+        }, 1000);
+      })
+
+    }
   })
   Decors.forEach((Decorations) => {
     Decorations.draw()
@@ -305,65 +375,96 @@ function animate() {
         playa.velocity.y = 0
         jumped = true
       }
-      console.log(playa.position.y);
+
 
     }
   })
 
   if (keys.Left.pressed && keys.Right.pressed) {
-    column = 0
+    column = 2
     playa.velocity.x = 0
-  } else
-    if (keys.Right.pressed && playa.position.x < 400) {
-      playa.velocity.x = playa.speed
-      column = 1
-    } else if ((keys.Left.pressed && playa.position.x > 100) ||
-      (keys.Left.pressed && playa.position.x > 0 && ScrollOffSet === 0)) {
-      playa.velocity.x = -playa.speed
-      column = 2
-    } else {
-      column = 0
-      playa.velocity.x = 0
-
-      Squares.forEach((CollisionSquares) => {
-
-
-        if (keys.Right.pressed) {
-          CollisionSquares.position.x -= playa.speed
-          ScrollOffSet += playa.speed
-          column = 1
-
-        } else if (keys.Left.pressed && ScrollOffSet > 0) {
-          CollisionSquares.position.x += playa.speed
-          ScrollOffSet -= playa.speed
-          column = 2
-        }
-      })
-      Decors.forEach((CollisionSquares) => {
-        if (keys.Right.pressed) {
-          CollisionSquares.position.x -= playa.speed
-          column = 1
-        } else if (keys.Left.pressed && ScrollOffSet > 0) {
-          CollisionSquares.position.x += playa.speed
-          column = 2
-          column = 2
-        }
-      })
-      BackgroundImage.forEach((CollisionSquares) => {
+  } else if (keys.Up.pressed && keys.Left.pressed && playa.position.x > 100) {
+    playa.velocity.x = -playa.speed
+    column = 1
+    row = 1
+    Augmentation = 0
+  } else if (keys.Up.pressed && keys.Right.pressed && playa.position.x < 400) {
+    playa.velocity.x = +playa.speed
+    column = 1
+    row = 0
+    Augmentation = 0
+  }
+  else if (keys.Right.pressed && playa.position.x < 400) {
+    playa.velocity.x = playa.speed
+    column = 3
+    Augmentation = 1
+  } else if ((keys.Left.pressed && playa.position.x > 100) ||
+    (keys.Left.pressed && playa.position.x > 0 && ScrollOffSet === 0)) {
+    playa.velocity.x = -playa.speed
+    column = 2
+    Augmentation = 1
+  }
+  /* Colliders Movement */
+  else {
+    playa.velocity.x = 0
+    column = 0
+    Augmentation = 1
 
 
-        if (keys.Right.pressed) {
-          CollisionSquares.position.x -= playa.speed * .20
-          column = 1
-        } else if (keys.Left.pressed) {
-          if (ScrollOffSet > 0) { CollisionSquares.position.x += playa.speed * .20 }
-          column = 2
+    Squares.forEach((CollisionSquares) => {
+
+      if (keys.Right.pressed) {
+        CollisionSquares.position.x -= playa.speed
+
+      } else if (keys.Left.pressed && ScrollOffSet > 0) {
+        CollisionSquares.position.x += playa.speed
+
+      }
+    })
+    IntractableCoins.forEach((Coins) => {
+
+      if (keys.Right.pressed) {
+        Coins.position.x -= playa.speed
+
+      } else if (keys.Left.pressed && ScrollOffSet > 0) {
+        Coins.position.x += playa.speed
+
+      }
+    })
+    Decors.forEach((CollisionSquares) => {
+      if (keys.Right.pressed) {
+        CollisionSquares.position.x -= playa.speed
+        ScrollOffSet += playa.speed
+      } else if (keys.Left.pressed && ScrollOffSet > 0) {
+        CollisionSquares.position.x += playa.speed
+        ScrollOffSet -= playa.speed
+      }
+    })
+    BackgroundImage.forEach((CollisionSquares) => {
+      if (keys.Up.pressed && keys.Left.pressed && ScrollOffSet > 0) {
+        CollisionSquares.position.x += playa.speed * .20
+        column = 1
+        Augmentation = 0
+        row = 1
+      } else if (keys.Up.pressed && keys.Right.pressed) {
+        CollisionSquares.position.x -= playa.speed * .20
+        column = 1
+        Augmentation = 0
+        row = 0
 
 
-        }
-      })
+      } else if (keys.Right.pressed) {
+        CollisionSquares.position.x -= playa.speed * .20
+        column = 3
+      } else if (keys.Left.pressed && ScrollOffSet > 0) {
+        CollisionSquares.position.x += playa.speed * .20
+        column = 2
 
-    }
+
+      }
+    })
+
+  }
 
   playa.update()
 }
@@ -378,9 +479,13 @@ addEventListener('keydown', ({ code }) => {
 
   switch (code) {
     case CaseUp:
+
       if (jumped == true) {
+        keys.Up.pressed = true
         playa.velocity.y = -15
         jumped = false
+
+
       }
       break;
     case CaseRight:
@@ -398,6 +503,9 @@ addEventListener('keydown', ({ code }) => {
 
 addEventListener('keyup', ({ code }) => {
   switch (code) {
+    case CaseUp:
+      keys.Up.pressed = false
+      break;
     case CaseRight:
       keys.Right.pressed = false
       break;
