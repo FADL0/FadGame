@@ -413,54 +413,6 @@ const keys = {
 function animate() {
   requestAnimationFrame(animate)
   c.clearRect(0, 0, canvas.width, canvas.height)
-
-  if (ScrollOffSet > 263630) {
-    keys.Up.pressed = false
-    keys.Right.pressed = false
-    keys.Left.pressed = false
-    keys.Down.pressed = false
-    if (ActualScore >= 69420 && EndPlayed === 0) {
-      EndPlayed++
-      console.log('loveyourself');
-      initialize()
-    } else if (ActualScore < 69420 && EndPlayed === 0) {
-      EndPlayed++
-      LTGBAD(0)
-      let realInterval = setInterval(() => {
-        LTGSquare.forEach((LTG) => {
-          LTG.position.x -= playa.speed * 2.2
-
-        });
-        animo.forEach((birb) => {
-          birb.position.x -= playa.speed * 0.30
-        })
-
-        BackgroundImage.forEach((CollisionSquares) => {
-          CollisionSquares.position.x -= playa.speed * .20
-        })
-
-        Squares.forEach((CollisionSquares) => {
-          CollisionSquares.position.x -= playa.speed
-        })
-        playa.velocity.y = 0
-        playa.velocity.x = -playa.speed
-
-        playa.update()
-
-      }, 50);
-
-
-      console.log('You SHould kill yourself NOW');
-      setTimeout(() => {
-        clearInterval(realInterval)
-      }, 1500);
-      setTimeout(() => {
-        initialize()
-      }, 12500);
-    }
-
-  }
-
   BackgroundImage.forEach((Background) => {
     Background.draw()
   })
@@ -610,7 +562,52 @@ function animate() {
 
   });
 
+  if (ScrollOffSet > 263630) {
+    keys.Up.pressed = false
+    keys.Right.pressed = false
+    keys.Left.pressed = false
+    keys.Down.pressed = false
+    if (ActualScore >= 69420 && EndPlayed === 0) {
+      EndPlayed++
+      console.log('loveyourself');
+      initialize()
+    } else if (ActualScore < 69420 && EndPlayed === 0) {
+      EndPlayed++
+      LTGBAD(0)
+      let realInterval = setInterval(() => {
+        LTGSquare.forEach((LTG) => {
+          LTG.position.x -= playa.speed * 2.2
 
+        });
+        animo.forEach((birb) => {
+          birb.position.x -= playa.speed * 0.30
+        })
+
+        BackgroundImage.forEach((CollisionSquares) => {
+          CollisionSquares.position.x -= playa.speed * .20
+        })
+
+        Squares.forEach((CollisionSquares) => {
+          CollisionSquares.position.x -= playa.speed
+        })
+        playa.velocity.y = 0
+        playa.velocity.x = -playa.speed
+
+        playa.update()
+
+      }, 50);
+
+
+      console.log('You SHould kill yourself NOW');
+      setTimeout(() => {
+        clearInterval(realInterval)
+      }, 1500);
+      setTimeout(() => {
+        initialize()
+      }, 12500);
+    }
+
+  }
 
   playa.update()
 
