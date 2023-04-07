@@ -12,10 +12,13 @@ function createImage(ImageSrc) {
 }
 
 
-/* Playa */
+/* Playa & LTG */
 let Player = new Image()
 Player.src = 'img/Character/Run/GojoSprite2.png'
 let gravity = 0.6
+
+let LTGImage = new Image()
+LTGImage.src = './img/LTGdeath.png'
 /* Map Class */
 class CollisionSquares {
   static InvisibleWidth = 100
@@ -109,6 +112,21 @@ class Coins {
 
   }
 }
+
+/* LTG Class */
+
+class LTG {
+  static width = 1500
+  static height = 30
+  constructor({ position, velocity, image }) {
+    this.position = position
+    this.velocity = velocity
+    this.image = image
+  }
+  draw() {
+    c.drawImage(this.image, this.position.x, this.position.y)
+  }
+}
 /* Initialize */
 let ScrollOffSet = 0
 function CoinClaim(Method) {
@@ -122,8 +140,30 @@ function CoinClaim(Method) {
   audio.volume = 0.5;
 
 }
+/* Audios */
+function LTGBAD(Method) {
+  let thunder = new Audio("./Sounds/LTGThunder.mp3")
+  let audio = new Audio("./Sounds/LTGbad.Mp3")
+  if (Method === 0) {
+    audio.play()
+    thunder.play()
+
+    setTimeout(() => {
+      thunder.play()
+      thunder.volume = 100
+    }, 12000);
+  } else if (Method === 1) {
+    audio.pause()
+    audio.currentTime = 0
+  }
+
+
+}
+
 
 function initialize() {
+  LTGSquare = []
+  EndPlayed = 0
   ActualScore = 0
   score.innerText = ActualScore
   ScrollOffSet = 0
@@ -131,6 +171,7 @@ function initialize() {
   BackgroundImage = []
   Squares = []
   animo = []
+
   playa = new player({
     position: {
       x: CollisionSquares.width,
@@ -217,6 +258,20 @@ function initialize() {
 
           }))
           break;
+        case 'LTG':
+          LTGSquare.push(new LTG({
+            position: {
+              x: LTG.width * j,
+              y: LTG.height * i
+            },
+            image: LTGImage,
+            velocity: {
+              x: 0,
+              y: 0
+            }
+
+          }))
+          break;
 
       }
     })
@@ -289,37 +344,24 @@ setInterval(() => {
     CoinRow++
   }
 }, 150);
-/* Enemy Class */
 
-class Enemy {
-
-  constructor({ position, velocity }) {
-    this.position = position
-    this.velocity = velocity
-    this.width = 100
-    this.height = 100
-  }
-  draw() {
-    c.drawImage
-  }
-}
 /* Map */
 let map = [
   ['R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', 'R', 'L', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '.', '-', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['B', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', 'M', 'M', 'M', 'M', 'M', 'K', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', 'K', '.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', 'B'],
-  ['B', 'K', '.', 'M', 'M', 'K', 'M', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', 'K', '.', 'K', '.', '.', 'B', '.', 'B', 'K', '.', 'K', 'K', '.', 'B', '.', '.', '.', '.', 'K', '.', '.', '.', '.', 'K', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B'],
-  ['M', 'M', 'K', 'M', 'M', 'M', 'M', 'M', 'M', 'M', 'M', 'K', 'K', 'M', 'M', 'K', 'K', 'M', 'M', 'M', 'M', 'M', 'M', 'M', 'M', 'C', 'C', 'M', 'M', 'M', 'B', 'M', 'B', 'M', 'M', 'M', 'M', '.', 'B', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B'],
-  ['B', '.', '.', 'M', 'B', '.', 'K', 'M', '.', '.', '.', '.', '.', 'M', '.', '.', '.', 'M', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', 'B', '.', 'B', '.', '.', '.', '.', '.', 'B', '.', 'C', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', 'B'],
-  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'],
-  ['B', 'B', '', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'I', 'B', 'B', 'B', 'B', 'B', 'B', 'B'],
-  ['B', 'B', 'B', 'B', '', '', 'B', 'B', '', '', '', '', '', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'C', 'C', 'B', 'B', 'B', 'B', 'B', 'B'],
-  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'C', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', '.', '.', '.', '.', '.', 'B'],
-  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'C', 'B', 'B', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', 'B', '.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', 'B'],
-  ['B', '.', '', '.', '.', '.', '.', '.', '', 'C', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B'],
+  ['.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', 'M', 'M', 'M', 'M', 'M', 'K', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', 'C', 'C', '.', '.', '.', '.'],
+  ['.', 'K', '.', '.', '.', 'K', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', 'K', '.', 'K', '.', '.', '.', '.', '.', 'K', '.', 'K', 'K', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', 'K', 'K', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', '.'],
+  ['.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', 'K', 'K', '.', '.', 'K', 'K', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+  ['.', '.', '.', '.', '.', '.', 'K', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', '.', '.', '.'],
+  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', 'C', '.', '.', '.', '.', '.'],
+  ['.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', 'I', '.', '.', 'C', '.', '.', '.', '.'],
+  ['.', '.', '.', '.', '', '', '.', '.', '', '', '', '', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', '.', '.', '.', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', 'B', '.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B'],
+  ['B', 'LTG', '', '.', '.', '.', '.', '.', '', 'C', '.', '.', '.', '.', '.', '.', '', '.', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B'],
   ['B', 'B', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'J', 'B', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['B', '', '', '.', '.', '.', 'G', '.', 'G', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
+  ['B', '', '', '.', '.', '.', 'G', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
   ['B', '', '', '', 'G', '.', '.', '.', '', '', '', '.', '.', '.', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'C', 'C', 'H', 'H', '', '.', '.', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
-  ['G', '', 'G', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', '.', '', '', '', '.', '-', '.', '.', '.', 'C', 'C', '-', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-']
+  ['G', '', 'G', '.', '', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', '.', '.', '.', '', '', '', '.', '-', '.', '.', '.', 'C', 'C', '-', 'C', 'C', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'C', 'C', '.', 'C', 'C', '.', '.', '.', '.', '-']
 ]
 
 /* Insides of HTML */
@@ -330,6 +372,8 @@ let IntractableCoins = []
 let BackgroundImage = []
 let Squares = []
 let animo = []
+let EndPlayed = 0
+let LTGSquare = []
 
 
 let playa = new player({
@@ -370,10 +414,56 @@ function animate() {
   requestAnimationFrame(animate)
   c.clearRect(0, 0, canvas.width, canvas.height)
 
+  if (ScrollOffSet > 263630) {
+    keys.Up.pressed = false
+    keys.Right.pressed = false
+    keys.Left.pressed = false
+    keys.Down.pressed = false
+    if (ActualScore >= 69420 && EndPlayed === 0) {
+      EndPlayed++
+      console.log('loveyourself');
+      initialize()
+    } else if (ActualScore < 69420 && EndPlayed === 0) {
+      EndPlayed++
+      LTGBAD(0)
+      let realInterval = setInterval(() => {
+        LTGSquare.forEach((LTG) => {
+          LTG.position.x -= playa.speed * 2.2
+
+        });
+        animo.forEach((birb) => {
+          birb.position.x -= playa.speed * 0.30
+        })
+
+        BackgroundImage.forEach((CollisionSquares) => {
+          CollisionSquares.position.x -= playa.speed * .20
+        })
+
+        Squares.forEach((CollisionSquares) => {
+          CollisionSquares.position.x -= playa.speed
+        })
+        playa.velocity.y = 0
+        playa.velocity.x = -playa.speed
+
+        playa.update()
+
+      }, 50);
+
+
+      console.log('You SHould kill yourself NOW');
+      setTimeout(() => {
+        clearInterval(realInterval)
+      }, 1500);
+      setTimeout(() => {
+        initialize()
+      }, 12500);
+    }
+
+  }
+
   BackgroundImage.forEach((Background) => {
     Background.draw()
   })
-
   IntractableCoins.forEach((Coins) => {
     Coins.draw()
     if (playa.position.x + playa.width + playa.velocity.x >= Coins.position.x &&
@@ -384,7 +474,7 @@ function animate() {
       CoinClaim(1)
       if (Coins.Column === 0) {
 
-        ActualScore = ActualScore + 100
+        ActualScore = ActualScore + 1735.5
         CoinClaim(0)
         IntractableCoins.forEach(() => {
           Coins.Column = 1
@@ -514,16 +604,20 @@ function animate() {
       birb.position.x -= playa.speed * 0.30
 
     }
-
-
-
-
-
   })
+  LTGSquare.forEach((LTG) => {
+    LTG.draw()
+
+  });
+
+
+
   playa.update()
+
 }
 
 animate()
+
 
 /* Keys EventListener */
 let CaseUp = 'KeyW'
@@ -534,21 +628,28 @@ addEventListener('keydown', ({ code }) => {
 
   switch (code) {
     case CaseUp:
-
-      if (jumped == true) {
-        keys.Up.pressed = true
-        playa.velocity.y = -15
-        jumped = false
+      if (ScrollOffSet < 263630) {
+        if (jumped == true) {
+          keys.Up.pressed = true
+          playa.velocity.y = -15
+          jumped = false
+        }
       }
       break;
     case CaseRight:
-      keys.Right.pressed = true
+      if (ScrollOffSet < 263630) {
+        keys.Right.pressed = true
+      }
       break;
     case CaseLeft:
-      keys.Left.pressed = true
+      if (ScrollOffSet < 263630) {
+        keys.Left.pressed = true
+      }
       break;
     case CaseDown:
-      keys.Down.pressed = true
+      if (ScrollOffSet < 263630) {
+        keys.Down.pressed = true
+      }
       break;
 
   }

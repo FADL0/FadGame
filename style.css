@@ -30,6 +30,10 @@ body {
     cursor: pointer;
 }
 
+.LTG:hover {
+    content: url(./img/Gear2.png);
+}
+
 .score {
     color: whitesmoke;
     position: fixed;
