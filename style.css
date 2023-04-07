@@ -57,7 +57,7 @@ body {
     border-radius: 20px;
     position: fixed;
     right: 40%;
-    background-color: rgba(165, 150, 89, 0.437);
+    background-color: rgba(0, 0, 0, 0.437);
     width: 500px;
     height: 600px;
 }
@@ -77,4 +77,18 @@ body {
 
     margin-top: 50px;
     margin-bottom: 50px;
+}
+
+@media screen and (max-width: 600px) {
+    section {
+        display: none;
+    }
+
+    img {
+        display: none;
+    }
+
+    div {
+        display: none;
+    }
 }
