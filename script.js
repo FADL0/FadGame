@@ -562,7 +562,19 @@ function animate() {
 
   });
 
+
+  playa.update()
+
+}
+
+animate()
+
+/* Ending */
+
+let realash = setInterval(() => {
+
   if (ScrollOffSet > 263630) {
+    finished++
     keys.Up.pressed = false
     keys.Right.pressed = false
     keys.Left.pressed = false
@@ -606,16 +618,11 @@ function animate() {
         initialize()
       }, 12500);
     }
+  
 
   }
 
-  playa.update()
-
-}
-
-animate()
-
-
+}, 200);
 /* Keys EventListener */
 let CaseUp = 'KeyW'
 let CaseLeft = 'KeyA'
