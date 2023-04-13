@@ -141,16 +141,30 @@ function CoinClaim(Method) {
 
 }
 /* Audios */
+function LTGgood(Method) {
+  let GoodAudio = new Audio("./Sounds/LTGgood.Mp3")
+  GoodAudio.volume = 0.5
+  if (Method === 0) {
+    GoodAudio.play()
+  } else if (Method === 1) {
+    GoodAudio.pause()
+    GoodAudio.currentTime = 0
+  }
+
+
+}
 function LTGBAD(Method) {
   let thunder = new Audio("./Sounds/LTGThunder.mp3")
   let audio = new Audio("./Sounds/LTGbad.Mp3")
+  audio.volume = 0.5
   if (Method === 0) {
     audio.play()
+
     thunder.play()
 
     setTimeout(() => {
       thunder.play()
-      thunder.volume = 100
+     
     }, 12000);
   } else if (Method === 1) {
     audio.pause()
@@ -569,10 +583,37 @@ function animate() {
     keys.Down.pressed = false
     if (ActualScore >= 69420 && EndPlayed === 0) {
       EndPlayed++
-      console.log('loveyourself');
-      initialize()
+      LTGgood(0)
+      LTGImage.src = 'img/LTGGoodEnding.png'
+      let realInterval = setInterval(() => {
+        LTGSquare.forEach((LTG) => {
+          LTG.position.x -= playa.speed * 2.2
+
+        });
+        animo.forEach((birb) => {
+          birb.position.x -= playa.speed * 0.30
+        })
+
+        BackgroundImage.forEach((CollisionSquares) => {
+          CollisionSquares.position.x -= playa.speed * .20
+        })
+
+        Squares.forEach((CollisionSquares) => {
+          CollisionSquares.position.x -= playa.speed
+        })
+        playa.velocity.y = 0
+        playa.velocity.x = -playa.speed
+
+        playa.update()
+
+      }, 50);
+
+      setTimeout(() => {
+        clearInterval(realInterval)
+      }, 1500);
     } else if (ActualScore < 69420 && EndPlayed === 0) {
       EndPlayed++
+      LTGImage.src = './img/LTGdeath.png'
       LTGBAD(0)
       let realInterval = setInterval(() => {
         LTGSquare.forEach((LTG) => {
