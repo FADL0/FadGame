@@ -14,7 +14,7 @@ function createImage(ImageSrc) {
 
 /* Playa & LTG */
 let Player = new Image()
-Player.src = 'img/Character/Run/GojoSprite2.png'
+Player.src = 'img/GojoSprite.png'
 let gravity = 0.6
 
 let LTGImage = new Image()
@@ -69,7 +69,7 @@ class Birb {
 
 /* Background */
 class Background {
-  static width = 0
+  static width = 1200
   static height = 0
   constructor({ position, image }) {
     this.position = position
@@ -248,7 +248,7 @@ function initialize() {
         case 'R':
           BackgroundImage.push(new Background({
             position: {
-              x: 2592 * j,
+              x: Background.width * j,
               y: Background.height * i
             },
             image: createImage('./img/Background.png'),
@@ -257,7 +257,7 @@ function initialize() {
         case 'L':
           BackgroundImage.push(new Background({
             position: {
-              x: 2592 * j,
+              x: Background.width * j,
               y: Background.height * i
             },
             image: createImage('./img/Background2.png'),
