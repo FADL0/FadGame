@@ -169,9 +169,8 @@ function LTGBAD(Method) {
     audio.currentTime = 0
   }
 }
-
+let Theming = new Audio("./Sounds/Theme2.Mp3")
 function Theme(Method) {
-  let Theming = new Audio("./Sounds/Theme2.Mp3")
   Theming.volume = 0.4
   if (Method === 0) {
     Theming.play()
@@ -181,6 +180,12 @@ function Theme(Method) {
   }
 }
 Theme(0)
+Theming.addEventListener('ended', function () {
+  Theming = new Audio("./Sounds/theme.Mp3")
+  this.currentTime = 0;
+  this.play();
+}, false);
+
 function initialize() {
   LTGSquare = []
   EndPlayed = 0
