@@ -437,7 +437,6 @@ function animate() {
       playa.position.y + playa.height + playa.velocity.y >= Coins.position.y &&
       playa.position.y + playa.velocity.y <= Coins.position.y + Coins.height) {
       score.innerText = ActualScore
-      CoinClaim(1)
       if (Coins.Column === 0) {
 
         ActualScore = ActualScore + 1735.5
