@@ -150,8 +150,6 @@ function LTGgood(Method) {
     GoodAudio.pause()
     GoodAudio.currentTime = 0
   }
-
-
 }
 function LTGBAD(Method) {
   let thunder = new Audio("./Sounds/LTGThunder.mp3")
@@ -170,11 +168,19 @@ function LTGBAD(Method) {
     audio.pause()
     audio.currentTime = 0
   }
-
-
 }
 
-
+function Theme(Method) {
+  let Theming = new Audio("./Sounds/Theme2.Mp3")
+  Theming.volume = 0.4
+  if (Method === 0) {
+    Theming.play()
+  } else if (Method === 1) {
+    Theming.pause()
+    Theming.currentTime = 0
+  }
+}
+Theme(0)
 function initialize() {
   LTGSquare = []
   EndPlayed = 0
@@ -591,6 +597,7 @@ let RealTranship = setInterval(() => {
     if (ActualScore >= 69420 && EndPlayed === 0) {
       clearInterval(RealTranship)
       EndPlayed++
+      Theme(1)
       LTGgood(0)
       LTGImage.src = 'img/LTGGoodEnding.png'
       let realInterval = setInterval(() => {
@@ -623,6 +630,7 @@ let RealTranship = setInterval(() => {
       clearInterval(RealTranship)
       EndPlayed++
       LTGImage.src = './img/LTGdeath.png'
+      Theme(1)
       LTGBAD(0)
       let realInterval = setInterval(() => {
         LTGSquare.forEach((LTG) => {
@@ -646,13 +654,11 @@ let RealTranship = setInterval(() => {
         playa.update()
 
       }, 50);
-
-
-      console.log('You SHould kill yourself NOW');
       setTimeout(() => {
         clearInterval(realInterval)
       }, 1500);
       setTimeout(() => {
+        Theme(0)
         initialize()
       }, 12500);
     }
