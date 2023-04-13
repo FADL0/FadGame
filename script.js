@@ -164,7 +164,7 @@ function LTGBAD(Method) {
 
     setTimeout(() => {
       thunder.play()
-     
+
     }, 12000);
   } else if (Method === 1) {
     audio.pause()
@@ -576,12 +576,21 @@ function animate() {
 
   });
 
+
+
+  playa.update()
+
+}
+
+animate()
+let RealTranship = setInterval(() => {
   if (ScrollOffSet > 263630) {
     keys.Up.pressed = false
     keys.Right.pressed = false
     keys.Left.pressed = false
     keys.Down.pressed = false
     if (ActualScore >= 69420 && EndPlayed === 0) {
+      clearInterval(RealTranship)
       EndPlayed++
       LTGgood(0)
       LTGImage.src = 'img/LTGGoodEnding.png'
@@ -612,6 +621,7 @@ function animate() {
         clearInterval(realInterval)
       }, 1500);
     } else if (ActualScore < 69420 && EndPlayed === 0) {
+      clearInterval(RealTranship)
       EndPlayed++
       LTGImage.src = './img/LTGdeath.png'
       LTGBAD(0)
@@ -649,12 +659,7 @@ function animate() {
     }
 
   }
-
-  playa.update()
-
-}
-
-animate()
+}, 200);
 
 
 /* Keys EventListener */
