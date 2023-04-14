@@ -179,7 +179,7 @@ function Theme(Method) {
     Theming.currentTime = 0
   }
 }
-Theme(0)
+
 Theming.addEventListener('ended', function () {
   Theming = new Audio("./Sounds/theme.Mp3")
   this.currentTime = 0;
@@ -187,6 +187,9 @@ Theming.addEventListener('ended', function () {
 }, false);
 
 function initialize() {
+
+  Theme(1)
+  Theme(0)
   LTGSquare = []
   EndPlayed = 0
   ActualScore = 0
