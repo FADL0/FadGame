@@ -100,21 +100,39 @@ body {
         display: none;
     }
 
-    .Mleft {
-        color: white;
-        display: block;
-        position: fixed;
-    }
-
     .Mright {
         color: white;
         display: block;
         position: fixed;
-        left: 5%;
+        left: 20%;
+        bottom: 10%;
+        font-size: 50px;
+    }
+
+    .Mleft {
+        color: white;
+        display: block;
+        position: fixed;
+        font-size: 50px;
+        left: 0;
+        bottom: 10%;
+    }
+
+    .Mjump {
+        color: white;
+        display: block;
+        position: fixed;
+        right: 5%;
+        bottom: 10%;
+        font-size: 50px;
     }
 }
 
 @media screen and (max-height: 600px) {
+    p {
+        display: none;
+    }
+
     canvas {
         width: 100vw;
         height: 60vw;
