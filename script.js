@@ -196,7 +196,7 @@ function initialize() {
 
   LTGSquare = []
   EndPlayed = 0
-  ActualScore = 555555
+  ActualScore = 0
   score.innerText = ActualScore
   ScrollOffSet = 0
   IntractableCoins = []
