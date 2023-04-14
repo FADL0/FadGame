@@ -181,6 +181,10 @@ function Theme(Method) {
   }
 }
 
+setTimeout(() => {
+  Theme(1)
+  Theme(0)
+}, 2000);
 Theming.addEventListener('ended', function () {
   Theming = new Audio("./Sounds/theme.Mp3")
   this.currentTime = 0;
@@ -189,11 +193,10 @@ Theming.addEventListener('ended', function () {
 
 function initialize() {
 
-  Theme(1)
-  Theme(0)
+
   LTGSquare = []
   EndPlayed = 0
-  ActualScore = 0
+  ActualScore = 555555
   score.innerText = ActualScore
   ScrollOffSet = 0
   IntractableCoins = []
