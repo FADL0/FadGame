@@ -1,5 +1,6 @@
 
 let canvas = document.querySelector("canvas")
+let allcomplete = document.querySelector(".GameComplete")
 let c = canvas.getContext("2d")
 canvas.width = 1200
 canvas.height = 950
@@ -634,6 +635,10 @@ let RealTranship = setInterval(() => {
       setTimeout(() => {
         clearInterval(realInterval)
       }, 1500);
+
+      setTimeout(() => {
+        allcomplete.classList.add("GameCompletefr")
+      }, 20000);
     } else if (ActualScore < 69420 && EndPlayed === 0) {
       clearInterval(RealTranship)
       EndPlayed++
