@@ -767,6 +767,40 @@ Gear.addEventListener('click', function () {
 })
 
 
-/* Score Tye Shi */
+/* Mobile Support*/
+let Mleft = document.querySelector(".Mleft")
+let Mright = document.querySelector(".Mright")
+let Mjump = document.querySelector(".Mjump")
+Mleft.addEventListener('touch', function (e) {
+  console.log(e);
+  keys.Left.pressed = true
+  keys.Right.pressed = false
+  console.log('yo');
+  e.preventDefault();
+}, false);
+
+Mright.addEventListener('click', function (e) {
+
+  keys.Right.pressed = true
+  keys.Left.pressed = false
+  e.preventDefault();
+  console.log(keys);
+  console.log('yo');
+
+}, false);
+
+Mjump.addEventListener('click', function (e) {
+
+  keys.Up.pressed = true
+  if (ScrollOffSet < 263630) {
+    if (jumped == true) {
+      keys.Up.pressed = true
+      playa.velocity.y = -15
+      jumped = false
+    }
+  }
+  keys.Up.pressed = false
+  e.preventDefault();
 
 
+}, false);
