@@ -84,6 +84,13 @@ body {
 }
 
 @media screen and (max-width: 600px) {
+    .score {
+        color: whitesmoke;
+        position: fixed;
+        left: 22vw;
+        top: 0;
+    }
+
     section {
         display: none;
     }

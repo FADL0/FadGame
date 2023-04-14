@@ -784,8 +784,7 @@ Mright.addEventListener('click', function (e) {
   keys.Right.pressed = true
   keys.Left.pressed = false
   e.preventDefault();
-  console.log(keys);
-  console.log('yo');
+
 
 }, false);
 
