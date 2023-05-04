@@ -607,7 +607,7 @@ let RealTranship = setInterval(() => {
     keys.Left.pressed = false
     keys.Down.pressed = false
     if (ActualScore >= 69420 && EndPlayed === 0) {
-      clearInterval(RealTranship)
+
       EndPlayed++
       Theme(1)
       LTGgood(0)
@@ -643,7 +643,7 @@ let RealTranship = setInterval(() => {
         allcomplete.classList.add("GameCompletefr")
       }, 20000);
     } else if (ActualScore < 69420 && EndPlayed === 0) {
-      clearInterval(RealTranship)
+
       EndPlayed++
       LTGImage.src = './img/LTGdeath.png'
       Theme(1)
